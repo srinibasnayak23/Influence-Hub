@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
-import { Sidebar, SidebarHeader, SidebarMenu, SidebarMenuItem, SidebarMenuButton, SidebarFooter, SidebarContent, SidebarTrigger } from '@/components/ui/sidebar';
+import { Sidebar, SidebarHeader, SidebarMenu, SidebarMenuItem, SidebarMenuButton, SidebarFooter, SidebarContent, SidebarTrigger, useSidebar } from '@/components/ui/sidebar';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { LayoutDashboard, Megaphone, Users, MessageSquare, ShieldCheck, Milestone, LogOut, Settings } from 'lucide-react';
@@ -23,10 +23,17 @@ const userAvatar = PlaceHolderImages.find(img => img.id === 'user-avatar');
 export function AppSidebar() {
   const pathname = usePathname();
   const router = useRouter();
+  const { setOpenMobile, isMobile } = useSidebar();
 
   const handleSignOut = () => {
     // Logic to be implemented later
     router.push('/login');
+  };
+
+  const handleLinkClick = () => {
+    if (isMobile) {
+      setOpenMobile(false);
+    }
   };
 
   return (
@@ -38,7 +45,7 @@ export function AppSidebar() {
             </Button>
             <span className="font-headline text-xl font-semibold text-primary hidden group-data-[state=expanded]:inline">InfluenceHub</span>
         </Link>
-        <SidebarTrigger className="hidden md:flex group-data-[state=collapsed]:rotate-180" />
+        <SidebarTrigger className="hidden md:flex group-data-[state=expanded]:rotate-180" />
       </SidebarHeader>
       <SidebarContent className="p-2">
         <SidebarMenu>
@@ -51,6 +58,7 @@ export function AppSidebar() {
                     children: item.label,
                     className: "bg-primary text-primary-foreground"
                   }}
+                  onClick={handleLinkClick}
                 >
                   <Link href={item.href}>
                     <item.icon />
