@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from 'react';
-import Image from 'next/image';
 import { cn } from '@/lib/utils';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
@@ -9,6 +8,7 @@ import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Paperclip, Search, Send } from 'lucide-react';
 import type { Conversation, Message } from '@/lib/types';
+import { conversations as allConversations } from '@/lib/placeholder-data';
 
 interface ChatLayoutProps {
   conversations: Conversation[];
@@ -32,9 +32,12 @@ export function ChatLayout({ conversations }: ChatLayoutProps) {
     setNewMessage("");
   };
 
-  const handleSelectConversation = (conversation: Conversation) => {
-    setSelectedConversation(conversation);
-    setMessages(conversation.messages);
+  const handleSelectConversation = (conversationId: string) => {
+    const conversation = allConversations.find(c => c.id === conversationId);
+    if (conversation) {
+        setSelectedConversation(conversation);
+        setMessages(conversation.messages);
+    }
   }
 
   return (
@@ -50,7 +53,7 @@ export function ChatLayout({ conversations }: ChatLayoutProps) {
           {conversations.map((convo) => (
             <button
               key={convo.id}
-              onClick={() => handleSelectConversation(convo)}
+              onClick={() => handleSelectConversation(convo.id)}
               className={cn(
                 'flex w-full items-start gap-3 p-4 text-left transition-colors hover:bg-muted',
                 selectedConversation.id === convo.id && 'bg-muted'
