@@ -32,7 +32,7 @@ export function AppSidebar() {
   return (
     <Sidebar variant="sidebar" collapsible="icon">
       <SidebarHeader className="p-4 flex items-center justify-between">
-        <Link href="/dashboard" className="flex items-center gap-2" data-testid="logo-link">
+        <Link href="/" className="flex items-center gap-2" data-testid="logo-link">
             <Button variant="outline" size="icon" className="size-9 shrink-0 bg-primary text-primary-foreground hover:bg-primary/90 hover:text-primary-foreground">
               <Logo className="size-5" />
             </Button>
