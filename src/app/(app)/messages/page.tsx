@@ -3,7 +3,7 @@ import { conversations } from "@/lib/placeholder-data";
 
 export default function MessagesPage() {
   return (
-    <div className="flex flex-col gap-6 p-0 sm:p-0 h-full">
+    <div className="flex flex-col h-full">
       <ChatLayout conversations={conversations} />
     </div>
   );

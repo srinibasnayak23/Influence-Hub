@@ -38,8 +38,8 @@ export function ChatLayout({ conversations }: ChatLayoutProps) {
   }
 
   return (
-    <div className="flex h-[calc(100vh-8rem)] rounded-lg border">
-      <div className="w-1/3 border-r">
+    <div className="flex h-[calc(100vh-4rem)] md:h-screen rounded-lg border-t md:border-t-0 md:border">
+      <div className="w-full md:w-1/3 border-r">
         <div className="p-4 border-b">
             <div className="relative">
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
@@ -75,7 +75,7 @@ export function ChatLayout({ conversations }: ChatLayoutProps) {
         </ScrollArea>
       </div>
 
-      <div className="flex w-2/3 flex-col">
+      <div className="hidden w-2/3 flex-col md:flex">
         <div className="flex items-center gap-3 border-b p-4">
             <Avatar>
                 <AvatarImage src={selectedConversation.influencerAvatar} alt={selectedConversation.influencerName} data-ai-hint="person portrait" />
