@@ -1,11 +1,12 @@
+
 "use client";
 
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
-import { Sidebar, SidebarHeader, SidebarMenu, SidebarMenuItem, SidebarMenuButton, SidebarFooter, SidebarContent, useSidebar } from '@/components/ui/sidebar';
+import { Sidebar, SidebarMenu, SidebarMenuItem, SidebarMenuButton, SidebarFooter, SidebarContent } from '@/components/ui/sidebar';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { LayoutDashboard, Megaphone, Users, MessageSquare, ShieldCheck, Milestone, LogOut, Settings, PanelLeft } from 'lucide-react';
+import { LayoutDashboard, Megaphone, Users, MessageSquare, ShieldCheck, Milestone, LogOut, Settings } from 'lucide-react';
 import { Logo } from '@/components/icons/logo';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 
@@ -23,17 +24,9 @@ const userAvatar = PlaceHolderImages.find(img => img.id === 'user-avatar');
 export function AppSidebar() {
   const pathname = usePathname();
   const router = useRouter();
-  const { setOpen, isMobile, setOpenMobile, state } = useSidebar();
 
   const handleSignOut = () => {
-    // Logic to be implemented later
     router.push('/login');
-  };
-
-  const handleLinkClick = () => {
-    if (isMobile) {
-      setOpenMobile(false);
-    }
   };
 
   return (
@@ -53,7 +46,6 @@ export function AppSidebar() {
                     <SidebarMenuButton 
                         asChild 
                         isActive={pathname.startsWith(item.href)}
-                        onClick={handleLinkClick}
                     >
                         <Link href={item.href}>
                             <item.icon />

@@ -29,7 +29,6 @@ export default function LoginPage() {
   const router = useRouter();
 
   const handleLogin = () => {
-    // Logic to be implemented later
     router.push('/dashboard');
   };
 

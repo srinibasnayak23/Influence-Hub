@@ -1,3 +1,4 @@
+
 'use server';
 
 /**
@@ -47,13 +48,7 @@ Community Guidelines:
 Content Type: {{{contentType}}}
 Content: {{{content}}}
 
-Determine if the content is safe and adheres to the community guidelines. If it violates any guideline, mark it as unsafe and provide specific reasons for the violation.
-
-Output should be in JSON format:
-{
-  "isSafe": true/false,
-  "reasons": ["reason1", "reason2", ...]
-}`,
+Determine if the content is safe and adheres to the community guidelines. If it violates any guideline, mark it as unsafe and provide specific reasons for the violation.`,
 });
 
 const moderateContentFlow = ai.defineFlow(
