@@ -1,8 +1,9 @@
+
 import { DollarSign, Megaphone, Users, Zap, ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
 import { CampaignEngagementChart } from "@/components/dashboard/campaign-engagement-chart";
 import { KpiCard } from "@/components/dashboard/kpi-card";
 import { PerformanceChart } from "@/components/dashboard/performance-chart";
