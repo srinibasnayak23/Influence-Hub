@@ -1,0 +1,167 @@
+import type { Campaign, Influencer, Collaboration, Conversation } from './types';
+
+export const campaigns: Campaign[] = [
+  {
+    id: '1',
+    title: 'Summer Glow Beauty Launch',
+    brandName: 'Aura Cosmetics',
+    brandLogo: 'https://picsum.photos/seed/brand3/40/40',
+    budget: 5000,
+    description: 'We are launching a new line of summer-themed beauty products. We are looking for influencers to create stunning visuals and tutorials.',
+    deliverables: ['1 Instagram Reel', '3 Instagram Stories', '1 Blog Post'],
+    startDate: '2024-06-01',
+    endDate: '2024-07-31',
+    category: 'Beauty',
+    tags: ['makeup', 'skincare', 'summer', 'beauty'],
+    status: 'Open',
+    impressions: 0,
+    engagement: 0,
+    image: 'https://picsum.photos/seed/campaign3/800/400',
+  },
+  {
+    id: '2',
+    title: 'Eco-Friendly Activewear',
+    brandName: 'GreenStride',
+    brandLogo: 'https://picsum.photos/seed/brand1/40/40',
+    budget: 7500,
+    description: 'Promote our new line of sustainable activewear. We want to partner with influencers passionate about fitness and sustainability.',
+    deliverables: ['2 Instagram Posts', '5 Instagram Stories', '1 YouTube Video'],
+    startDate: '2024-06-15',
+    endDate: '2024-08-15',
+    category: 'Fashion',
+    tags: ['fitness', 'sustainable', 'activewear', 'eco-friendly'],
+    status: 'In Progress',
+    impressions: 120000,
+    engagement: 8.5,
+    image: 'https://picsum.photos/seed/campaign1/800/400',
+  },
+  {
+    id: '3',
+    title: 'Next-Gen Smart Home Hub',
+    brandName: 'Innovatech',
+    brandLogo: 'https://picsum.photos/seed/brand2/40/40',
+    budget: 10000,
+    description: 'Showcase the features of our new AI-powered smart home hub. We are looking for tech reviewers and lifestyle influencers.',
+    deliverables: ['1 Detailed YouTube Review', '3 Instagram Stories', '1 Twitter Thread'],
+    startDate: '2024-07-01',
+    endDate: '2024-08-31',
+    category: 'Tech',
+    tags: ['smart home', 'tech', 'gadgets', 'AI'],
+    status: 'Open',
+    impressions: 0,
+    engagement: 0,
+    image: 'https://picsum.photos/seed/campaign2/800/400',
+  },
+];
+
+export const influencers: Influencer[] = [
+  {
+    id: '1',
+    name: 'Jessica Vogue',
+    avatar: 'https://picsum.photos/seed/influencer1/100/100',
+    category: 'Fashion',
+    tags: ['luxury', 'streetwear', 'styling'],
+    followers: 250000,
+    engagementRate: 5.2,
+    bio: 'Fashion enthusiast sharing daily looks and styling tips. Helping you build a wardrobe you love.',
+  },
+  {
+    id: '2',
+    name: 'Alex "Tech" Guru',
+    avatar: 'https://picsum.photos/seed/influencer2/100/100',
+    category: 'Tech',
+    tags: ['reviews', 'gadgets', 'PC gaming'],
+    followers: 500000,
+    engagementRate: 7.8,
+    bio: 'Unboxing and reviewing the latest tech. From smartphones to custom PC builds, I cover it all.',
+  },
+  {
+    id: '3',
+    name: 'Chloe Wellness',
+    avatar: 'https://picsum.photos/seed/influencer3/100/100',
+    category: 'Lifestyle',
+    tags: ['health', 'fitness', 'mindfulness'],
+    followers: 150000,
+    engagementRate: 4.1,
+    bio: 'Your guide to a balanced and healthy lifestyle. Sharing workout routines, healthy recipes, and mindfulness practices.',
+  },
+  {
+    id: '4',
+    name: 'Gamer Sam',
+    avatar: 'https://picsum.photos/seed/influencer4/100/100',
+    category: 'Gaming',
+    tags: ['esports', 'streaming', 'game reviews'],
+    followers: 800000,
+    engagementRate: 10.3,
+    bio: 'Professional gamer and streamer. Live daily on Twitch playing the hottest new releases.',
+  },
+];
+
+export const collaborations: Collaboration[] = [
+  {
+    id: 'collab-1',
+    campaignId: '2',
+    campaignTitle: 'Eco-Friendly Activewear',
+    influencerId: '1',
+    influencerName: 'Jessica Vogue',
+    influencerAvatar: 'https://picsum.photos/seed/influencer1/100/100',
+    brandName: 'GreenStride',
+    brandLogo: 'https://picsum.photos/seed/brand1/40/40',
+    status: 'Active',
+    milestones: [
+      { id: 'm1', title: 'Initial Post', dueDate: '2024-06-30', status: 'Approved', payout: 2500 },
+      { id: 'm2', title: 'Stories Submission', dueDate: '2024-07-10', status: 'In Review', payout: 1500 },
+      { id: 'm3', title: 'YouTube Video', dueDate: '2024-07-25', status: 'Pending', payout: 3500 },
+    ],
+  },
+];
+
+export const conversations: Conversation[] = [
+    {
+        id: 'conv-1',
+        influencerName: 'Jessica Vogue',
+        influencerAvatar: 'https://picsum.photos/seed/influencer1/100/100',
+        campaignTitle: 'Eco-Friendly Activewear',
+        lastMessage: 'Sounds good! I will get the revised content over to you by tomorrow.',
+        lastMessageTimestamp: '2024-07-11T10:00:00Z',
+        unreadCount: 0,
+        messages: [
+            { id: 'msg-1', sender: 'brand', senderName: 'GreenStride', text: 'Hi Jessica, we loved the initial post! For the stories, could we get a shot with the green leggings?', timestamp: '2024-07-10T14:30:00Z' },
+            { id: 'msg-2', sender: 'influencer', senderName: 'Jessica Vogue', text: 'Absolutely! I was planning on shooting those today. Glad you liked the post!', timestamp: '2024-07-10T14:32:00Z' },
+            { id: 'msg-3', sender: 'brand', senderName: 'GreenStride', text: 'Perfect. Looking forward to it.', timestamp: '2024-07-10T14:35:00Z' },
+            { id: 'msg-4', sender: 'influencer', senderName: 'Jessica Vogue', text: 'Sounds good! I will get the revised content over to you by tomorrow.', timestamp: '2024-07-11T10:00:00Z' },
+        ],
+    },
+    {
+        id: 'conv-2',
+        influencerName: 'Alex "Tech" Guru',
+        influencerAvatar: 'https://picsum.photos/seed/influencer2/100/100',
+        campaignTitle: 'Next-Gen Smart Home Hub',
+        lastMessage: 'Yes, I can definitely highlight the AI assistant feature more.',
+        lastMessageTimestamp: '2024-07-09T18:21:00Z',
+        unreadCount: 2,
+        messages: [
+            { id: 'msg-5', sender: 'brand', senderName: 'Innovatech', text: 'Hey Alex, thanks for the proposal. We\'d like to move forward.', timestamp: '2024-07-09T18:20:00Z' },
+            { id: 'msg-6', sender: 'influencer', senderName: 'Alex "Tech" Guru', text: 'Awesome! Excited to work with you. I\'m reading through the brief now.', timestamp: '2024-07-09T18:20:30Z' },
+            { id: 'msg-7', sender: 'brand', senderName: 'Innovatech', text: 'Great. Let us know if you have any questions. We\'d love for you to emphasize the new AI voice assistant.', timestamp: '2024-07-09T18:20:45Z' },
+            { id: 'msg-8', sender: 'influencer', senderName: 'Alex "Tech" Guru', text: 'Yes, I can definitely highlight the AI assistant feature more.', timestamp: '2024-07-09T18:21:00Z' },
+        ],
+    },
+];
+
+export const performanceData = [
+  { date: '2024-01-01', impressions: 2000, engagement: 300 },
+  { date: '2024-02-01', impressions: 2500, engagement: 400 },
+  { date: '2024-03-01', impressions: 3000, engagement: 450 },
+  { date: '2024-04-01', impressions: 2780, engagement: 390 },
+  { date: '2024-05-01', impressions: 4890, engagement: 680 },
+  { date: '2024-06-01', impressions: 4390, engagement: 580 },
+  { date: '2024-07-01', impressions: 5490, engagement: 750 },
+];
+
+export const campaignEngagementData = [
+    { name: 'Eco-Friendly Activewear', engagement: 8.5, budget: 7500 },
+    { name: 'Old Campaign A', engagement: 6.2, budget: 5000 },
+    { name: 'Old Campaign B', engagement: 7.1, budget: 12000 },
+    { name: 'Old Campaign C', engagement: 5.5, budget: 3000 },
+];
