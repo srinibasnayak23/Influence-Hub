@@ -65,7 +65,7 @@ export default function DashboardPage() {
                 {recentConversations.map((convo) => (
                     <Link href="/messages" key={convo.id} className="flex items-start gap-4 p-2 -m-2 rounded-lg hover:bg-muted">
                         <Avatar className="h-10 w-10 border">
-                            <AvatarImage src={convo.influencerAvatar} alt={convoo.influencerName} data-ai-hint="person portrait" />
+                            <AvatarImage src={convo.influencerAvatar} alt={convo.influencerName} data-ai-hint="person portrait" />
                             <AvatarFallback>{convo.influencerName.charAt(0)}</AvatarFallback>
                         </Avatar>
                         <div className="flex-1">
