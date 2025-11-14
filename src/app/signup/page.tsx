@@ -70,7 +70,12 @@ export default function SignupPage() {
                 </div>
             </RadioGroup>
           </div>
-          <div className="relative">
+        </CardContent>
+        <CardFooter className="flex flex-col gap-4">
+          <Button className="w-full" onClick={handleSignup}>
+            Create Account
+          </Button>
+          <div className="relative w-full">
             <div className="absolute inset-0 flex items-center">
                 <span className="w-full border-t" />
             </div>
@@ -83,11 +88,6 @@ export default function SignupPage() {
           <Button variant="outline" className="w-full">
             <GoogleIcon className="mr-2 h-4 w-4" />
             Sign up with Google
-          </Button>
-        </CardContent>
-        <CardFooter className="flex flex-col gap-4">
-          <Button className="w-full" onClick={handleSignup}>
-            Create Account
           </Button>
           <div className="text-center text-sm text-muted-foreground">
             Already have an account?{' '}
