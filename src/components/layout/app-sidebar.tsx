@@ -38,7 +38,7 @@ export function AppSidebar() {
             </Button>
             <span className="font-headline text-xl font-semibold text-primary hidden group-data-[state=expanded]:inline">InfluenceHub</span>
         </Link>
-        <SidebarTrigger className="hidden md:flex" />
+        <SidebarTrigger className="hidden md:flex group-data-[state=collapsed]:rotate-180" />
       </SidebarHeader>
       <SidebarContent className="p-2">
         <SidebarMenu>
