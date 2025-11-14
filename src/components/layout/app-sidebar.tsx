@@ -1,7 +1,7 @@
 "use client";
 
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { Sidebar, SidebarHeader, SidebarMenu, SidebarMenuItem, SidebarMenuButton, SidebarFooter, SidebarContent } from '@/components/ui/sidebar';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -22,6 +22,12 @@ const userAvatar = PlaceHolderImages.find(img => img.id === 'user-avatar');
 
 export function AppSidebar() {
   const pathname = usePathname();
+  const router = useRouter();
+
+  const handleSignOut = () => {
+    // Logic to be implemented later
+    router.push('/login');
+  };
 
   return (
     <Sidebar variant="sidebar" collapsible="icon">
@@ -80,7 +86,7 @@ export function AppSidebar() {
                 <span className="text-sm font-semibold">Brand Co.</span>
                 <span className="text-xs text-muted-foreground">brand@co.com</span>
             </div>
-            <Button variant="ghost" size="icon" className="ml-auto">
+            <Button variant="ghost" size="icon" className="ml-auto" onClick={handleSignOut}>
                 <LogOut className="size-4" />
             </Button>
         </div>
