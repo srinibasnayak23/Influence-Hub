@@ -10,7 +10,7 @@ export function AppHeader() {
           <Logo className="h-6 w-6 text-primary" />
           <span className="sr-only">InfluenceHub</span>
         </Link>
-        <SidebarTrigger variant="ghost" size="icon">
+        <SidebarTrigger>
           <PanelLeft />
           <span className="sr-only">Toggle Menu</span>
         </SidebarTrigger>

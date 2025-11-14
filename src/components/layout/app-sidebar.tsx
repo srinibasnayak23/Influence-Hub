@@ -2,10 +2,10 @@
 
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
-import { Sidebar, SidebarHeader, SidebarMenu, SidebarMenuItem, SidebarMenuButton, SidebarFooter, SidebarContent, SidebarTrigger, useSidebar } from '@/components/ui/sidebar';
+import { Sidebar, SidebarHeader, SidebarMenu, SidebarMenuItem, SidebarMenuButton, SidebarFooter, SidebarContent, useSidebar } from '@/components/ui/sidebar';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { LayoutDashboard, Megaphone, Users, MessageSquare, ShieldCheck, Milestone, LogOut, Settings } from 'lucide-react';
+import { LayoutDashboard, Megaphone, Users, MessageSquare, ShieldCheck, Milestone, LogOut, Settings, PanelLeft } from 'lucide-react';
 import { Logo } from '@/components/icons/logo';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 
@@ -23,7 +23,7 @@ const userAvatar = PlaceHolderImages.find(img => img.id === 'user-avatar');
 export function AppSidebar() {
   const pathname = usePathname();
   const router = useRouter();
-  const { setOpenMobile, isMobile } = useSidebar();
+  const { setOpen, isMobile, setOpenMobile, state } = useSidebar();
 
   const handleSignOut = () => {
     // Logic to be implemented later
@@ -37,69 +37,58 @@ export function AppSidebar() {
   };
 
   return (
-    <Sidebar variant="sidebar" collapsible="icon">
-      <SidebarHeader className="p-4 flex items-center justify-between">
-        <Link href="/" className="flex items-center gap-2" data-testid="logo-link">
-            <Button variant="outline" size="icon" className="size-9 shrink-0 bg-primary text-primary-foreground hover:bg-primary/90 hover:text-primary-foreground">
-              <Logo className="size-5" />
-            </Button>
-            <span className="font-headline text-xl font-semibold text-primary hidden group-data-[state=expanded]:inline">InfluenceHub</span>
-        </Link>
-        <SidebarTrigger className="hidden md:flex group-data-[state=expanded]:rotate-180" />
-      </SidebarHeader>
-      <SidebarContent className="p-2">
-        <SidebarMenu>
-          {menuItems.map((item) => (
-            <SidebarMenuItem key={item.href}>
-                <SidebarMenuButton 
-                  asChild 
-                  isActive={pathname.startsWith(item.href)}
-                  tooltip={{
-                    children: item.label,
-                    className: "bg-primary text-primary-foreground"
-                  }}
-                  onClick={handleLinkClick}
-                >
-                  <Link href={item.href}>
-                    <item.icon />
-                    <span className="hidden group-data-[state=expanded]:inline">{item.label}</span>
-                  </Link>
-                </SidebarMenuButton>
-            </SidebarMenuItem>
-          ))}
-        </SidebarMenu>
-      </SidebarContent>
-      <SidebarFooter className="flex-col gap-2 p-2">
-        <SidebarMenu>
-            <SidebarMenuItem>
-                <SidebarMenuButton 
-                    asChild
-                    tooltip={{
-                        children: "Settings",
-                        className: "bg-primary text-primary-foreground"
-                    }}
-                >
-                    <Link href="#">
-                        <Settings />
-                        <span className="hidden group-data-[state=expanded]:inline">Settings</span>
-                    </Link>
-                </SidebarMenuButton>
-            </SidebarMenuItem>
-        </SidebarMenu>
-        <div className="flex items-center gap-3 rounded-md bg-muted p-2">
-            <Avatar className="h-9 w-9">
-                <AvatarImage src={userAvatar?.imageUrl} alt="Brand Co." data-ai-hint={userAvatar?.imageHint} />
-                <AvatarFallback>BC</AvatarFallback>
-            </Avatar>
-            <div className="flex-col hidden group-data-[state=expanded]:flex">
-                <span className="text-sm font-semibold">Brand Co.</span>
-                <span className="text-xs text-muted-foreground">brand@co.com</span>
+    <Sidebar>
+        <SidebarContent className="flex flex-col p-2">
+            <div className="flex items-center justify-between p-2">
+                <Link href="/" className="flex items-center gap-2" data-testid="logo-link">
+                    <Button variant="outline" size="icon" className="size-9 shrink-0 bg-primary text-primary-foreground hover:bg-primary/90 hover:text-primary-foreground">
+                        <Logo className="size-5" />
+                    </Button>
+                    <span className="font-headline text-xl font-semibold text-primary">InfluenceHub</span>
+                </Link>
             </div>
-            <Button variant="ghost" size="icon" className="ml-auto hidden group-data-[state=expanded]:inline-flex" onClick={handleSignOut}>
-                <LogOut className="size-4" />
-            </Button>
-        </div>
-      </SidebarFooter>
+            <SidebarMenu className="flex-1 mt-4">
+            {menuItems.map((item) => (
+                <SidebarMenuItem key={item.href}>
+                    <SidebarMenuButton 
+                        asChild 
+                        isActive={pathname.startsWith(item.href)}
+                        onClick={handleLinkClick}
+                    >
+                        <Link href={item.href}>
+                            <item.icon />
+                            <span>{item.label}</span>
+                        </Link>
+                    </SidebarMenuButton>
+                </SidebarMenuItem>
+            ))}
+            </SidebarMenu>
+        </SidebarContent>
+        <SidebarFooter className="flex-col gap-2 p-2">
+            <SidebarMenu>
+                <SidebarMenuItem>
+                    <SidebarMenuButton asChild>
+                        <Link href="#">
+                            <Settings />
+                            <span>Settings</span>
+                        </Link>
+                    </SidebarMenuButton>
+                </SidebarMenuItem>
+            </SidebarMenu>
+            <div className="flex items-center gap-3 rounded-md bg-muted p-2">
+                <Avatar className="h-9 w-9">
+                    <AvatarImage src={userAvatar?.imageUrl} alt="Brand Co." data-ai-hint={userAvatar?.imageHint} />
+                    <AvatarFallback>BC</AvatarFallback>
+                </Avatar>
+                <div className="flex-col flex">
+                    <span className="text-sm font-semibold">Brand Co.</span>
+                    <span className="text-xs text-muted-foreground">brand@co.com</span>
+                </div>
+                <Button variant="ghost" size="icon" className="ml-auto" onClick={handleSignOut}>
+                    <LogOut className="size-4" />
+                </Button>
+            </div>
+        </SidebarFooter>
     </Sidebar>
   );
 }
