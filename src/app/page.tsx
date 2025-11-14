@@ -1,12 +1,13 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import { ArrowRight, Star } from 'lucide-react';
+import { ArrowRight, Star, ShieldCheck, Zap, Users } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { CampaignCard } from '@/components/campaigns/campaign-card';
 import { InfluencerCard } from '@/components/influencers/influencer-card';
 import { campaigns, influencers } from '@/lib/placeholder-data';
 import { LandingNavbar } from '@/components/layout/landing-navbar';
 import { LandingFooter } from '@/components/layout/landing-footer';
+import { Card, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 
 export default function LandingPage() {
   const featuredCampaigns = campaigns.slice(0, 3);
@@ -54,6 +55,53 @@ export default function LandingPage() {
           </div>
         </section>
 
+        {/* Features Section */}
+        <section id="features" className="py-16 sm:py-24 bg-muted">
+          <div className="container mx-auto px-4">
+            <h2 className="text-center font-headline text-3xl font-bold tracking-tight sm:text-4xl">
+              Why Choose InfluenceHub?
+            </h2>
+            <p className="mx-auto mt-4 max-w-2xl text-center text-muted-foreground">
+              A comprehensive suite of tools to streamline your influencer marketing.
+            </p>
+            <div className="mt-12 grid gap-8 md:grid-cols-3">
+              <Card className="text-center">
+                <CardHeader>
+                  <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-primary text-primary-foreground">
+                    <Zap className="h-6 w-6" />
+                  </div>
+                  <CardTitle className="font-headline mt-4">Powerful Connections</CardTitle>
+                  <CardDescription>
+                    Easily find and connect with the perfect brands or influencers for your campaigns.
+                  </CardDescription>
+                </CardHeader>
+              </Card>
+              <Card className="text-center">
+                <CardHeader>
+                  <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-primary text-primary-foreground">
+                    <ShieldCheck className="h-6 w-6" />
+                  </div>
+                  <CardTitle className="font-headline mt-4">Secure & Transparent</CardTitle>
+                  <CardDescription>
+                    Manage contracts, milestones, and payments securely all in one place.
+                  </CardDescription>
+                </CardHeader>
+              </Card>
+              <Card className="text-center">
+                <CardHeader>
+                  <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-primary text-primary-foreground">
+                    <Users className="h-6 w-6" />
+                  </div>
+                  <CardTitle className="font-headline mt-4">Community Focused</CardTitle>
+                  <CardDescription>
+                    Join a growing community of creators and brands dedicated to authentic marketing.
+                  </CardDescription>
+                </CardHeader>
+              </Card>
+            </div>
+          </div>
+        </section>
+
         {/* Featured Campaigns Section */}
         <section id="campaigns" className="py-16 sm:py-24">
           <div className="container mx-auto px-4">
@@ -88,6 +136,35 @@ export default function LandingPage() {
               ))}
             </div>
           </div>
+        </section>
+
+        {/* About Us Section */}
+        <section id="about" className="py-16 sm:py-24">
+            <div className="container mx-auto px-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+                    <div>
+                        <h2 className="font-headline text-3xl font-bold tracking-tight sm:text-4xl">
+                            About InfluenceHub
+                        </h2>
+                        <p className="mt-4 text-muted-foreground">
+                            InfluenceHub was founded with a simple mission: to bridge the gap between innovative brands and creative influencers. We believe in the power of authentic storytelling and aim to provide a platform that fosters meaningful and successful collaborations.
+                        </p>
+                        <p className="mt-4 text-muted-foreground">
+                            Our team is passionate about building a transparent, efficient, and supportive ecosystem where both brands and influencers can thrive.
+                        </p>
+                    </div>
+                    <div>
+                        <Image 
+                            src="https://picsum.photos/seed/about/600/400"
+                            alt="Team collaborating"
+                            width={600}
+                            height={400}
+                            className="rounded-lg shadow-lg"
+                            data-ai-hint="team collaboration"
+                        />
+                    </div>
+                </div>
+            </div>
         </section>
       </main>
       <LandingFooter />

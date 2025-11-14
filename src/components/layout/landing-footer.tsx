@@ -3,7 +3,7 @@ import { Logo } from "@/components/icons/logo";
 
 export function LandingFooter() {
   return (
-    <footer className="bg-card text-card-foreground">
+    <footer id="contact" className="bg-card text-card-foreground border-t">
       <div className="container mx-auto px-4 py-8">
         <div className="grid grid-cols-1 gap-8 md:grid-cols-4">
           <div className="flex flex-col gap-4">
@@ -20,18 +20,19 @@ export function LandingFooter() {
           <div>
             <h3 className="font-semibold">Platform</h3>
             <ul className="mt-4 space-y-2 text-sm">
+              <li><Link href="#features" className="text-muted-foreground hover:text-foreground">Features</Link></li>
               <li><Link href="#campaigns" className="text-muted-foreground hover:text-foreground">Campaigns</Link></li>
               <li><Link href="#influencers" className="text-muted-foreground hover:text-foreground">Influencers</Link></li>
               <li><Link href="/login" className="text-muted-foreground hover:text-foreground">Login</Link></li>
-              <li><Link href="/signup" className="text-muted-foreground hover:text-foreground">Sign Up</Link></li>
             </ul>
           </div>
           <div>
             <h3 className="font-semibold">Company</h3>
             <ul className="mt-4 space-y-2 text-sm">
-              <li><Link href="#" className="text-muted-foreground hover:text-foreground">About Us</Link></li>
+              <li><Link href="#about" className="text-muted-foreground hover:text-foreground">About Us</Link></li>
               <li><Link href="#" className="text-muted-foreground hover:text-foreground">Careers</Link></li>
               <li><Link href="#" className="text-muted-foreground hover:text-foreground">Press</Link></li>
+              <li><Link href="#contact" className="text-muted-foreground hover:text-foreground">Contact Us</Link></li>
             </ul>
           </div>
           <div>

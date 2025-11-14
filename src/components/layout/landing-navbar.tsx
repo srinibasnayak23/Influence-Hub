@@ -7,9 +7,11 @@ import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 
 const navLinks = [
+  { href: "#features", label: "Features" },
   { href: "#campaigns", label: "Campaigns" },
   { href: "#influencers", label: "Influencers" },
-  { href: "#features", label: "Features" },
+  { href: "#about", label: "About" },
+  { href: "#contact", label: "Contact" },
 ];
 
 export function LandingNavbar() {
