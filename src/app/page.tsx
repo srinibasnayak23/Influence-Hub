@@ -26,7 +26,7 @@ export default function LandingPage() {
               className="object-cover"
               data-ai-hint="abstract background"
             />
-            <div className="absolute inset-0 bg-black/50" />
+            <div className="absolute inset-0 bg-black/60" />
           </div>
           <div className="container mx-auto px-4 text-center text-white">
             <div className="flex flex-col items-center">
