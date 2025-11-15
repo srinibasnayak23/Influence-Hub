@@ -57,7 +57,6 @@ export default function LoginPage() {
       await signInWithEmail(values.email, values.password);
       router.push('/dashboard');
     } catch (error: any) {
-      console.error("Email Sign-In Error", error);
       toast({ variant: "destructive", title: "Sign-In Failed", description: error.message });
     }
   };
@@ -67,7 +66,6 @@ export default function LoginPage() {
       await signInWithGoogle(role);
       router.push('/dashboard');
     } catch (error: any) {
-      console.error("Google Sign-In Error", error);
       toast({ variant: "destructive", title: "Sign-In Failed", description: error.message });
     }
   };

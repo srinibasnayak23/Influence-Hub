@@ -1,5 +1,5 @@
 
-import { GoogleAuthProvider, signInWithPopup, signOut as firebaseSignOut, createUserWithEmailAndPassword, signInWithEmailAndPassword, type User } from "firebase/auth";
+import { GoogleAuthProvider, signInWithPopup, signOut as firebaseSignOut, createUserWithEmailAndPassword, signInWithEmailAndPassword, type User, AuthErrorCodes } from "firebase/auth";
 import { doc, setDoc, getDoc, serverTimestamp, type Firestore } from "firebase/firestore";
 import { auth, db } from "./client";
 
@@ -30,9 +30,12 @@ export async function signInWithGoogle(role: 'influencer' | 'brand') {
     const result = await signInWithPopup(auth, googleProvider);
     await storeUser(result.user, role);
     return result.user;
-  } catch (error) {
+  } catch (error: any) {
     console.error("Error signing in with Google: ", error);
-    throw error;
+    if (error.code === AuthErrorCodes.POPUP_CLOSED_BY_USER) {
+        throw new Error("Sign-in process was cancelled.");
+    }
+    throw new Error("Could not sign in with Google. Please try again.");
   }
 }
 
@@ -41,9 +44,14 @@ export async function signUpWithEmail(fullName: string, email: string, password:
         const result = await createUserWithEmailAndPassword(auth, email, password);
         await storeUser(result.user, role, fullName);
         return result.user;
-    } catch (error) {
-        console.error("Error signing up with email: ", error);
-        throw error;
+    } catch (error: any) {
+        if (error.code === AuthErrorCodes.EMAIL_EXISTS) {
+            throw new Error("An account already exists with this email address.");
+        }
+        if (error.code === AuthErrorCodes.WEAK_PASSWORD) {
+            throw new Error("Password should be at least 6 characters.");
+        }
+        throw new Error("Could not create account. Please try again.");
     }
 }
 
@@ -51,9 +59,11 @@ export async function signInWithEmail(email: string, password: string) {
     try {
         const result = await signInWithEmailAndPassword(auth, email, password);
         return result.user;
-    } catch (error) {
-        console.error("Error signing in with email: ", error);
-        throw error;
+    } catch (error: any) {
+       if (error.code === AuthErrorCodes.INVALID_LOGIN_CREDENTIALS) {
+            throw new Error("Invalid email or password.");
+       }
+       throw new Error("An unexpected error occurred. Please try again.");
     }
 }
 

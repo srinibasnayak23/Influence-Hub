@@ -63,7 +63,6 @@ export default function SignupPage() {
         await signUpWithEmail(values.fullName, values.email, values.password, values.role);
         router.push('/dashboard');
     } catch (error: any) {
-        console.error("Email Sign-Up Error", error);
         toast({ variant: "destructive", title: "Sign-Up Failed", description: error.message });
     }
   };
@@ -73,8 +72,7 @@ export default function SignupPage() {
       await signInWithGoogle(role);
       router.push('/dashboard');
     } catch (error: any) {
-      console.error("Google Sign-In Error", error);
-      toast({ variant: "destructive", title: "Sign-Up Failed", description: "Could not sign up with Google." });
+      toast({ variant: "destructive", title: "Sign-Up Failed", description: error.message });
     }
   };
 
