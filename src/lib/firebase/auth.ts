@@ -2,6 +2,10 @@ import { GoogleAuthProvider, signInWithPopup, signOut as firebaseSignOut } from 
 import { auth } from "./client";
 
 const provider = new GoogleAuthProvider();
+provider.setCustomParameters({
+  prompt: 'select_account'
+});
+
 
 export async function signInWithGoogle() {
   try {
