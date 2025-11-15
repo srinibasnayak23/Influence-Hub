@@ -1,10 +1,11 @@
+
 export const firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_AUTH_DOMAIN",
-  projectId: "YOUR_PROJECT_ID",
-  storageBucket: "YOUR_STORAGE_BUCKET",
-  messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-  appId: "YOUR_APP_ID"
+  projectId: "studio-7289149233-30e53",
+  appId: "1:177309948442:web:81f1790791e6b4586a0fa3",
+  apiKey: "AIzaSyBHdDP-Leil2S5TDxcVPtJiXiripn_wfus",
+  authDomain: "studio-7289149233-30e53.firebaseapp.com",
+  measurementId: "",
+  messagingSenderId: "177309948442"
 };
 // Note: This is a placeholder configuration.
 // The actual configuration is injected server-side.
