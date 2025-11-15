@@ -24,7 +24,7 @@ const menuItems = [
 export function AppSidebar() {
   const pathname = usePathname();
   const router = useRouter();
-  const { user, loading } = useAuth();
+  const { user, userProfile, loading } = useAuth();
 
   const handleSignOut = async () => {
     await signOut();
@@ -85,7 +85,7 @@ export function AppSidebar() {
                             <AvatarFallback>{user.displayName?.charAt(0) || 'U'}</AvatarFallback>
                         </Avatar>
                         <div className="flex-col flex min-w-0">
-                            <span className="text-sm font-semibold truncate">{user.displayName || 'User'}</span>
+                            <span className="text-sm font-semibold truncate">{userProfile?.displayName || user.displayName || 'User'}</span>
                             <span className="text-xs text-muted-foreground truncate">{user.email}</span>
                         </div>
                         <Button variant="ghost" size="icon" className="ml-auto" onClick={handleSignOut}>
@@ -93,7 +93,11 @@ export function AppSidebar() {
                         </Button>
                     </>
                 ) : (
-                    <div className="flex-1 text-sm text-muted-foreground">Not signed in.</div>
+                     <div className="flex-1 text-sm text-muted-foreground">
+                        <Button asChild className="w-full">
+                            <Link href="/login">Sign In</Link>
+                        </Button>
+                    </div>
                 )}
             </div>
         </SidebarFooter>

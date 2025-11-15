@@ -1,6 +1,7 @@
 
 "use client";
 
+import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Button } from "@/components/ui/button";
 import {
@@ -15,7 +16,9 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Logo } from '@/components/icons/logo';
 import Link from 'next/link';
-import { signInWithGoogle } from '@/lib/firebase/auth';
+import { signInWithGoogle, signInWithEmail } from '@/lib/firebase/auth';
+import { useToast } from '@/hooks/use-toast';
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 
 function GoogleIcon(props: React.SVGProps<SVGSVGElement>) {
   return (
@@ -28,19 +31,32 @@ function GoogleIcon(props: React.SVGProps<SVGSVGElement>) {
 
 export default function LoginPage() {
   const router = useRouter();
+  const { toast } = useToast();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [role, setRole] = useState<'influencer' | 'brand'>('influencer');
 
-  const handleLogin = () => {
-    // This is a placeholder for email/password login
-    router.push('/dashboard');
+  const handleLogin = async () => {
+    if (!email || !password) {
+        toast({ variant: "destructive", title: "Error", description: "Please enter email and password." });
+        return;
+    }
+    try {
+      await signInWithEmail(email, password);
+      router.push('/dashboard');
+    } catch (error: any) {
+      console.error("Email Sign-In Error", error);
+      toast({ variant: "destructive", title: "Sign-In Failed", description: error.message });
+    }
   };
 
   const handleGoogleSignIn = async () => {
     try {
-      await signInWithGoogle();
+      await signInWithGoogle(role);
       router.push('/dashboard');
     } catch (error) {
       console.error("Google Sign-In Error", error);
-      // You might want to show an error to the user
+      toast({ variant: "destructive", title: "Sign-In Failed", description: "Could not sign in with Google." });
     }
   };
 
@@ -57,7 +73,7 @@ export default function LoginPage() {
         <CardContent className="space-y-4">
           <div className="space-y-2">
             <Label htmlFor="email">Email</Label>
-            <Input id="email" type="email" placeholder="name@example.com" />
+            <Input id="email" type="email" placeholder="name@example.com" value={email} onChange={(e) => setEmail(e.target.value)} />
           </div>
           <div className="space-y-2">
             <div className="flex items-center justify-between">
@@ -66,7 +82,7 @@ export default function LoginPage() {
                     Forgot password?
                 </Link>
             </div>
-            <Input id="password" type="password" />
+            <Input id="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
           </div>
         </CardContent>
         <CardFooter className="flex flex-col gap-4">
@@ -83,11 +99,26 @@ export default function LoginPage() {
                     </span>
                 </div>
             </div>
-            <Button variant="outline" className="w-full" onClick={handleGoogleSignIn}>
-                <GoogleIcon className="mr-2 h-4 w-4" />
-                Sign in with Google
-            </Button>
-          <div className="text-center text-sm text-muted-foreground">
+            <div className="w-full space-y-4">
+                <div className="space-y-2">
+                    <Label className="text-sm">Select your role to sign in with Google</Label>
+                    <RadioGroup value={role} onValueChange={(value: any) => setRole(value)} className="flex gap-4 pt-1">
+                        <div className="flex items-center space-x-2">
+                            <RadioGroupItem value="influencer" id="r1" />
+                            <Label htmlFor="r1">Influencer</Label>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                            <RadioGroupItem value="brand" id="r2" />
+                            <Label htmlFor="r2">Brand / Public User</Label>
+                        </div>
+                    </RadioGroup>
+                </div>
+                <Button variant="outline" className="w-full" onClick={handleGoogleSignIn}>
+                    <GoogleIcon className="mr-2 h-4 w-4" />
+                    Sign in with Google
+                </Button>
+            </div>
+          <div className="text-center text-sm text-muted-foreground mt-4">
             Don&apos;t have an account?{' '}
             <Link href="/signup" className="text-primary hover:underline">
               Create an account

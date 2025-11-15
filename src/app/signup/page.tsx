@@ -1,6 +1,7 @@
 
 "use client";
 
+import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Button } from "@/components/ui/button";
 import {
@@ -16,7 +17,8 @@ import { Label } from "@/components/ui/label";
 import { Logo } from '@/components/icons/logo';
 import Link from 'next/link';
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { signInWithGoogle } from '@/lib/firebase/auth';
+import { signInWithGoogle, signUpWithEmail } from '@/lib/firebase/auth';
+import { useToast } from '@/hooks/use-toast';
 
 function GoogleIcon(props: React.SVGProps<SVGSVGElement>) {
   return (
@@ -29,19 +31,34 @@ function GoogleIcon(props: React.SVGProps<SVGSVGElement>) {
 
 export default function SignupPage() {
   const router = useRouter();
+  const { toast } = useToast();
+  const [fullName, setFullName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [role, setRole] = useState<'influencer' | 'brand'>('influencer');
 
-  const handleSignup = () => {
-    // This is a placeholder for email/password signup
-    router.push('/dashboard');
+
+  const handleSignup = async () => {
+    if (!fullName || !email || !password) {
+        toast({ variant: "destructive", title: "Error", description: "Please fill out all fields." });
+        return;
+    }
+    try {
+        await signUpWithEmail(fullName, email, password, role);
+        router.push('/dashboard');
+    } catch (error: any) {
+        console.error("Email Sign-Up Error", error);
+        toast({ variant: "destructive", title: "Sign-Up Failed", description: error.message });
+    }
   };
 
   const handleGoogleSignIn = async () => {
     try {
-      await signInWithGoogle();
+      await signInWithGoogle(role);
       router.push('/dashboard');
     } catch (error) {
       console.error("Google Sign-In Error", error);
-      // You might want to show an error to the user
+      toast({ variant: "destructive", title: "Sign-Up Failed", description: "Could not sign up with Google." });
     }
   };
 
@@ -58,19 +75,19 @@ export default function SignupPage() {
         <CardContent className="space-y-4">
           <div className="space-y-2">
             <Label htmlFor="fullname">Full Name</Label>
-            <Input id="fullname" type="text" placeholder="John Doe" />
+            <Input id="fullname" type="text" placeholder="John Doe" value={fullName} onChange={(e) => setFullName(e.target.value)} />
           </div>
           <div className="space-y-2">
             <Label htmlFor="email">Email</Label>
-            <Input id="email" type="email" placeholder="name@example.com" />
+            <Input id="email" type="email" placeholder="name@example.com" value={email} onChange={(e) => setEmail(e.target.value)} />
           </div>
           <div className="space-y-2">
             <Label htmlFor="password">Password</Label>
-            <Input id="password" type="password" />
+            <Input id="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
           </div>
           <div className="space-y-2">
             <Label>I am a...</Label>
-            <RadioGroup defaultValue="influencer" className="flex gap-4 pt-1">
+            <RadioGroup value={role} onValueChange={(value: any) => setRole(value)} className="flex gap-4 pt-1">
                 <div className="flex items-center space-x-2">
                     <RadioGroupItem value="influencer" id="r1" />
                     <Label htmlFor="r1">Influencer</Label>
