@@ -15,6 +15,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Logo } from '@/components/icons/logo';
 import Link from 'next/link';
+import { signInWithGoogle } from '@/lib/firebase/auth';
 
 function GoogleIcon(props: React.SVGProps<SVGSVGElement>) {
   return (
@@ -29,7 +30,18 @@ export default function LoginPage() {
   const router = useRouter();
 
   const handleLogin = () => {
+    // This is a placeholder for email/password login
     router.push('/dashboard');
+  };
+
+  const handleGoogleSignIn = async () => {
+    try {
+      await signInWithGoogle();
+      router.push('/dashboard');
+    } catch (error) {
+      console.error("Google Sign-In Error", error);
+      // You might want to show an error to the user
+    }
   };
 
   return (
@@ -71,7 +83,7 @@ export default function LoginPage() {
                     </span>
                 </div>
             </div>
-            <Button variant="outline" className="w-full">
+            <Button variant="outline" className="w-full" onClick={handleGoogleSignIn}>
                 <GoogleIcon className="mr-2 h-4 w-4" />
                 Sign in with Google
             </Button>
