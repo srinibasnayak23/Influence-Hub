@@ -18,9 +18,6 @@ export default function DashboardPage() {
         <h1 className="font-headline text-3xl font-bold tracking-tight">
           Dashboard
         </h1>
-        <Button variant="default" className="bg-accent text-accent-foreground hover:bg-accent/90">
-          Create New Campaign
-        </Button>
       </div>
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
@@ -69,10 +66,10 @@ export default function DashboardPage() {
                             <AvatarImage src={convo.influencerAvatar} alt={convo.influencerName} data-ai-hint="person portrait" />
                             <AvatarFallback>{convo.influencerName.charAt(0)}</AvatarFallback>
                         </Avatar>
-                        <div className="flex-1">
+                        <div className="flex-1 min-w-0">
                             <div className="flex items-center justify-between">
-                                <p className="font-semibold text-sm">{convo.influencerName}</p>
-                                <p className="text-xs text-muted-foreground">
+                                <p className="font-semibold text-sm truncate">{convo.influencerName}</p>
+                                <p className="text-xs text-muted-foreground flex-shrink-0 ml-2">
                                     {new Date(convo.lastMessageTimestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                                 </p>
                             </div>
