@@ -1,7 +1,8 @@
+
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
+import { useForm, useFieldArray } from "react-hook-form";
 import { z } from "zod";
 import { Button } from "@/components/ui/button";
 import {
@@ -47,6 +48,11 @@ export function CampaignForm() {
     },
   });
 
+  const { fields, append, remove } = useFieldArray({
+    control: form.control,
+    name: "deliverables",
+  });
+
   function onSubmit(values: z.infer<typeof formSchema>) {
     console.log(values);
     toast({
@@ -54,8 +60,6 @@ export function CampaignForm() {
       description: "Your new campaign has been successfully created and is now visible to influencers.",
     });
   }
-
-  const { fields, append, remove } = (form.control as any)._fields.deliverables;
 
   return (
     <Form {...form}>
@@ -253,38 +257,38 @@ export function CampaignForm() {
                     />
                 </div>
                  <div>
-                    {fields.map((field: any, index: number) => (
-                        <FormField
-                        control={form.control}
-                        key={field.id}
-                        name={`deliverables.${index}.value`}
-                        render={({ field }) => (
-                            <FormItem>
-                                <FormLabel className={cn(index !== 0 && "sr-only")}>
-                                    Deliverables
-                                </FormLabel>
-                                <FormDescription className={cn(index !== 0 && "sr-only")}>
-                                    Specify the content you expect from influencers.
-                                </FormDescription>
-                                <div className="flex items-center gap-2">
-                                    <FormControl>
-                                        <Input {...field} placeholder="e.g., 1 Instagram Reel" />
-                                    </FormControl>
-                                    <Button
-                                        type="button"
-                                        variant="outline"
-                                        size="icon"
-                                        onClick={() => remove(index)}
-                                        disabled={fields.length === 1}
-                                    >
-                                        <Trash2 className="h-4 w-4" />
-                                    </Button>
-                                </div>
-                                <FormMessage />
-                            </FormItem>
-                        )}
-                        />
-                    ))}
+                    <FormLabel>Deliverables</FormLabel>
+                    <FormDescription>
+                        Specify the content you expect from influencers.
+                    </FormDescription>
+                    <div className="space-y-2 pt-2">
+                        {fields.map((field, index) => (
+                            <FormField
+                            control={form.control}
+                            key={field.id}
+                            name={`deliverables.${index}.value`}
+                            render={({ field }) => (
+                                <FormItem>
+                                    <div className="flex items-center gap-2">
+                                        <FormControl>
+                                            <Input {...field} placeholder="e.g., 1 Instagram Reel" />
+                                        </FormControl>
+                                        <Button
+                                            type="button"
+                                            variant="outline"
+                                            size="icon"
+                                            onClick={() => remove(index)}
+                                            disabled={fields.length === 1}
+                                        >
+                                            <Trash2 className="h-4 w-4" />
+                                        </Button>
+                                    </div>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                            />
+                        ))}
+                    </div>
                     <Button
                         type="button"
                         variant="outline"
@@ -306,3 +310,5 @@ export function CampaignForm() {
     </Form>
   );
 }
+
+    
