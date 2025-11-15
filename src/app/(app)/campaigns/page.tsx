@@ -2,7 +2,9 @@ import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { campaigns } from "@/lib/placeholder-data";
 import { CampaignCard } from "@/components/campaigns/campaign-card";
-import { Search } from "lucide-react";
+import { PlusCircle, Search } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 export default function CampaignsPage() {
   return (
@@ -16,18 +18,24 @@ export default function CampaignsPage() {
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                 <Input placeholder="Search campaigns..." className="pl-9" />
             </div>
-          <Select>
-            <SelectTrigger className="w-48">
-              <SelectValue placeholder="All Categories" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="fashion">Fashion</SelectItem>
-              <SelectItem value="tech">Tech</SelectItem>
-              <SelectItem value="beauty">Beauty</SelectItem>
-              <SelectItem value="gaming">Gaming</SelectItem>
-              <SelectItem value="lifestyle">Lifestyle</SelectItem>
-            </SelectContent>
-          </Select>
+            <Select>
+              <SelectTrigger className="w-48 hidden md:flex">
+                <SelectValue placeholder="All Categories" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="fashion">Fashion</SelectItem>
+                <SelectItem value="tech">Tech</SelectItem>
+                <SelectItem value="beauty">Beauty</SelectItem>
+                <SelectItem value="gaming">Gaming</SelectItem>
+                <SelectItem value="lifestyle">Lifestyle</SelectItem>
+              </SelectContent>
+            </Select>
+            <Button asChild>
+              <Link href="/campaigns/new">
+                <PlusCircle className="mr-2" />
+                Create Campaign
+              </Link>
+            </Button>
         </div>
       </div>
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
