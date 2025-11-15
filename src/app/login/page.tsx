@@ -3,6 +3,10 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
+
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -14,11 +18,17 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Logo } from '@/components/icons/logo';
 import Link from 'next/link';
 import { signInWithGoogle, signInWithEmail } from '@/lib/firebase/auth';
 import { useToast } from '@/hooks/use-toast';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
+
+const formSchema = z.object({
+  email: z.string().email("Invalid email address."),
+  password: z.string().min(1, "Password is required."),
+});
 
 function GoogleIcon(props: React.SVGProps<SVGSVGElement>) {
   return (
@@ -32,17 +42,19 @@ function GoogleIcon(props: React.SVGProps<SVGSVGElement>) {
 export default function LoginPage() {
   const router = useRouter();
   const { toast } = useToast();
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
   const [role, setRole] = useState<'influencer' | 'brand'>('influencer');
 
-  const handleLogin = async () => {
-    if (!email || !password) {
-        toast({ variant: "destructive", title: "Error", description: "Please enter email and password." });
-        return;
-    }
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      email: '',
+      password: '',
+    },
+  });
+
+  const handleLogin = async (values: z.infer<typeof formSchema>) => {
     try {
-      await signInWithEmail(email, password);
+      await signInWithEmail(values.email, values.password);
       router.push('/dashboard');
     } catch (error: any) {
       console.error("Email Sign-In Error", error);
@@ -54,9 +66,9 @@ export default function LoginPage() {
     try {
       await signInWithGoogle(role);
       router.push('/dashboard');
-    } catch (error) {
+    } catch (error: any) {
       console.error("Google Sign-In Error", error);
-      toast({ variant: "destructive", title: "Sign-In Failed", description: "Could not sign in with Google." });
+      toast({ variant: "destructive", title: "Sign-In Failed", description: error.message });
     }
   };
 
@@ -70,25 +82,49 @@ export default function LoginPage() {
           <CardTitle className="font-headline text-2xl">Welcome Back</CardTitle>
           <CardDescription>Enter your credentials to access your account</CardDescription>
         </CardHeader>
-        <CardContent className="space-y-4">
-          <div className="space-y-2">
-            <Label htmlFor="email">Email</Label>
-            <Input id="email" type="email" placeholder="name@example.com" value={email} onChange={(e) => setEmail(e.target.value)} />
-          </div>
-          <div className="space-y-2">
-            <div className="flex items-center justify-between">
-                <Label htmlFor="password">Password</Label>
-                <Link href="#" className="text-sm text-primary hover:underline">
-                    Forgot password?
-                </Link>
-            </div>
-            <Input id="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
-          </div>
-        </CardContent>
-        <CardFooter className="flex flex-col gap-4">
-          <Button className="w-full" onClick={handleLogin}>
-            Sign In
-          </Button>
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(handleLogin)}>
+            <CardContent className="space-y-4">
+              <FormField
+                control={form.control}
+                name="email"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Email</FormLabel>
+                    <FormControl>
+                      <Input type="email" placeholder="name@example.com" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="password"
+                render={({ field }) => (
+                  <FormItem>
+                    <div className="flex items-center justify-between">
+                      <FormLabel>Password</FormLabel>
+                      <Link href="#" className="text-sm text-primary hover:underline">
+                        Forgot password?
+                      </Link>
+                    </div>
+                    <FormControl>
+                      <Input type="password" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </CardContent>
+            <CardFooter className="flex flex-col gap-4">
+              <Button type="submit" className="w-full">
+                Sign In
+              </Button>
+            </CardFooter>
+          </form>
+        </Form>
+        <CardFooter className="flex flex-col gap-4 pt-0">
             <div className="relative w-full">
                 <div className="absolute inset-0 flex items-center">
                     <span className="w-full border-t" />

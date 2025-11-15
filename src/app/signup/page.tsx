@@ -3,6 +3,10 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
+
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -14,11 +18,20 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Logo } from '@/components/icons/logo';
 import Link from 'next/link';
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { signInWithGoogle, signUpWithEmail } from '@/lib/firebase/auth';
 import { useToast } from '@/hooks/use-toast';
+
+const formSchema = z.object({
+  fullName: z.string().min(1, "Full name is required."),
+  email: z.string().email("Invalid email address."),
+  password: z.string().min(6, "Password must be at least 6 characters."),
+  role: z.enum(['influencer', 'brand'], { required_error: "You must select a role."}),
+});
+
 
 function GoogleIcon(props: React.SVGProps<SVGSVGElement>) {
   return (
@@ -32,19 +45,22 @@ function GoogleIcon(props: React.SVGProps<SVGSVGElement>) {
 export default function SignupPage() {
   const router = useRouter();
   const { toast } = useToast();
-  const [fullName, setFullName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [role, setRole] = useState<'influencer' | 'brand'>('influencer');
+  
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      fullName: '',
+      email: '',
+      password: '',
+      role: 'influencer',
+    },
+  });
+  
+  const role = form.watch('role');
 
-
-  const handleSignup = async () => {
-    if (!fullName || !email || !password) {
-        toast({ variant: "destructive", title: "Error", description: "Please fill out all fields." });
-        return;
-    }
+  const handleSignup = async (values: z.infer<typeof formSchema>) => {
     try {
-        await signUpWithEmail(fullName, email, password, role);
+        await signUpWithEmail(values.fullName, values.email, values.password, values.role);
         router.push('/dashboard');
     } catch (error: any) {
         console.error("Email Sign-Up Error", error);
@@ -56,7 +72,7 @@ export default function SignupPage() {
     try {
       await signInWithGoogle(role);
       router.push('/dashboard');
-    } catch (error) {
+    } catch (error: any) {
       console.error("Google Sign-In Error", error);
       toast({ variant: "destructive", title: "Sign-Up Failed", description: "Could not sign up with Google." });
     }
@@ -72,37 +88,87 @@ export default function SignupPage() {
           <CardTitle className="font-headline text-2xl">Create an Account</CardTitle>
           <CardDescription>Join InfluenceHub and start connecting.</CardDescription>
         </CardHeader>
-        <CardContent className="space-y-4">
-          <div className="space-y-2">
-            <Label htmlFor="fullname">Full Name</Label>
-            <Input id="fullname" type="text" placeholder="John Doe" value={fullName} onChange={(e) => setFullName(e.target.value)} />
-          </div>
-          <div className="space-y-2">
-            <Label htmlFor="email">Email</Label>
-            <Input id="email" type="email" placeholder="name@example.com" value={email} onChange={(e) => setEmail(e.target.value)} />
-          </div>
-          <div className="space-y-2">
-            <Label htmlFor="password">Password</Label>
-            <Input id="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
-          </div>
-          <div className="space-y-2">
-            <Label>I am a...</Label>
-            <RadioGroup value={role} onValueChange={(value: any) => setRole(value)} className="flex gap-4 pt-1">
-                <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="influencer" id="r1" />
-                    <Label htmlFor="r1">Influencer</Label>
-                </div>
-                <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="brand" id="r2" />
-                    <Label htmlFor="r2">Brand / Public User</Label>
-                </div>
-            </RadioGroup>
-          </div>
-        </CardContent>
-        <CardFooter className="flex flex-col gap-4">
-          <Button className="w-full" onClick={handleSignup}>
-            Create Account
-          </Button>
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(handleSignup)}>
+            <CardContent className="space-y-4">
+              <FormField
+                control={form.control}
+                name="fullName"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Full Name</FormLabel>
+                    <FormControl>
+                      <Input placeholder="John Doe" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="email"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Email</FormLabel>
+                    <FormControl>
+                      <Input type="email" placeholder="name@example.com" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="password"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Password</FormLabel>
+                    <FormControl>
+                      <Input type="password" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="role"
+                render={({ field }) => (
+                  <FormItem className="space-y-2">
+                    <FormLabel>I am a...</FormLabel>
+                    <FormControl>
+                      <RadioGroup
+                        onValueChange={field.onChange}
+                        defaultValue={field.value}
+                        className="flex gap-4 pt-1"
+                      >
+                        <FormItem className="flex items-center space-x-2">
+                          <FormControl>
+                            <RadioGroupItem value="influencer" id="r1" />
+                          </FormControl>
+                          <Label htmlFor="r1">Influencer</Label>
+                        </FormItem>
+                        <FormItem className="flex items-center space-x-2">
+                          <FormControl>
+                            <RadioGroupItem value="brand" id="r2" />
+                          </FormControl>
+                          <Label htmlFor="r2">Brand / Public User</Label>
+                        </FormItem>
+                      </RadioGroup>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </CardContent>
+            <CardFooter className="flex flex-col gap-4">
+              <Button type="submit" className="w-full">
+                Create Account
+              </Button>
+            </CardFooter>
+          </form>
+        </Form>
+        <CardFooter className="flex flex-col gap-4 pt-0">
           <div className="relative w-full">
             <div className="absolute inset-0 flex items-center">
                 <span className="w-full border-t" />
